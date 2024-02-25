@@ -34,12 +34,29 @@ class BaseForecastingProcess(ABC):
 
     @abstractmethod
     def process_data(self):
+        pass
+
+    @abstractmethod
+    def run_all_models(self):
+        pass
+
+    @abstractmethod
+    def save_forecast(self, df_pred):
+        pass
+
+class ForecastingProcess(BaseForecastingProcess):
+    def __init__(self, data, models, parameters, forecast_days):
+        super().__init__(data, models, parameters, forecast_days)
+        # Filter time series and regression models
+        self.time_series_models = [model for model in models if issubclass(model, TimeSeriesModel)]
+        self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
+    
+    def process_data(self):
         df_info = get_splitted_df(self.data, family_name,store_id)
         df_ts = get_time_series(df_info)
         df_ts = fill_values(df_ts)
         return df_ts
 
-    @abstractmethod
     def run_all_models(self):
         df_ts = self.process_data()
         for model_class in self.models:
@@ -53,17 +70,9 @@ class BaseForecastingProcess(ABC):
             df_yhat = model_instance.predict(fitted_model)
             self.save_forecast(df_yhat)
 
-    @abstractmethod
     def save_forecast(self, df_pred):
         df_pred = structure_predictions(self.data['date'].max(), df_pred, f, s)
         save_predictions(self.data['date'].max(), df_pred)
-
-class ForecastingProcess(BaseForecastingProcess):
-    def __init__(self, data, models, parameters, forecast_days):
-        super().__init__(data, models, parameters, forecast_days)
-        # Filter time series and regression models
-        self.time_series_models = [model for model in models if issubclass(model, TimeSeriesModel)]
-        self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
 
 class TimeSeriesModel(ForecastingProcess):
     def __init__(self, data, models, parameters, forecast_days):
