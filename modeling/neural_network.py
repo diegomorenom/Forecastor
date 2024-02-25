@@ -71,4 +71,16 @@ def neural_network_forecast(df_reg, forecast_days, scaler):
 
 
 
+class NeuralNetworkFF(RegressionModel):
+    def __init__(self, data, models, parameters):
+        super().__init__(data, models, parameters)
+        self.parameter_1 = parameters.get("moving_average_parameter_1", None)
+        self.parameter_2 = parameters.get("moving_average_parameter_2", None)
+        # Initialize other attributes specific to moving average model
+        def fit_model(self):
+        # Implement logic to fit time series model
+            pass
 
+        def predict(self):
+            # Implement logic to predict using time series model
+            pass

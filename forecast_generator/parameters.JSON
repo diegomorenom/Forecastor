@@ -1,0 +1,28 @@
+[
+    {
+        "ForecastDays": 30,
+        "Models": ["HoltWinters", "MovingAverage"]
+    },
+
+    {
+        "HoltWinters": {
+            "model_name": "holt_winters_1",
+            "model_type": "HoltWinters",
+            "model_description": "First version of holt winters",
+            "model_parameters":{
+                "seasonal": "add", 
+                "seasonal_periods": 7
+            }
+        },
+
+        "MovingAverage": {
+            "model_name": "moving_average_1",
+            "model_type": "MovingAverage",
+            "model_description": "First version of moving average",
+            "model_parameters":{
+                "time_window": 7
+            }
+        }
+    }
+
+]

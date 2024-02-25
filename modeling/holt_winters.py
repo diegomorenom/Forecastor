@@ -10,19 +10,28 @@ warnings.simplefilter('ignore', ConvergenceWarning)
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-data_path = str(parent_path) + "/holt_winters/data_processing"
-sys.path.append(data_path)
+forecast_path = str(parent_path) + "/forecastor/forecast_generator"
+sys.path.append(forecast_path)
 
+    
+class HoltWinters:
+    def __init__(self, data, models, parameters, forecast_days, time_series_model):
+        self.data = data 
+        self.forecast_days = forecast_days 
+        self.time_series_model = time_series_model
+        #self.seasonal = parameters.get("holt_winters_parameter_1", None)
+        #self.seasonal_periods = parameters.get("holt_winters_parameter_2", None)
+        
+    def fit_model(self):
+        # Implement logic to fit time series model
+        # create class
+        model = ExponentialSmoothing(self.data, seasonal="add", seasonal_periods=7)
+        # fit model
+        fitted_model = model.fit()
+        return fitted_model
 
-from data_handler import get_data, get_stores, get_families, get_time_series
-
-# holt winters
-def holt_winters_forecast(data, forecast_days):
-    # create class
-    model = ExponentialSmoothing(data,seasonal="add", seasonal_periods=7)
-    # fit model
-    model_fit = model.fit()
-    # make prediction
-    yhat = model_fit.forecast(forecast_days)
-    return yhat
-
+    def predict(self):
+        # Implement logic to predict using time series model
+        # make prediction
+        yhat = self.fitted_model.forecast(self.forecast_days)
+        return yhat

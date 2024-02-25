@@ -24,3 +24,32 @@ def exp_smoothing_forecast(data, forecast_days):
     # make prediction
     yhat = model_fit.forecast(forecast_days)
     return yhat
+
+class SimpleExponentialSmoothing(TimeSeriesModel):
+    def __init__(self, data, models, parameters):
+        super().__init__(data, models, parameters)
+        self.parameter_1 = parameters.get("simple_exponential_smoothing_parameter_1", None)
+        self.parameter_2 = parameters.get("simple_exponential_smoothing_parameter_2", None)
+        # Initialize other attributes specific to simple exponential smoothing model
+        def fit_model(self):
+        # Implement logic to fit time series model
+            pass
+
+        def predict(self):
+            # Implement logic to predict using time series model
+            pass
+
+class DoubleExponentialSmoothing(TimeSeriesModel):
+    def __init__(self, data, models, parameters):
+        super().__init__(data, models, parameters)
+        self.parameter_1 = parameters.get("double_exponential_smoothing_parameter_1", None)
+        self.parameter_2 = parameters.get("double_exponential_smoothing_parameter_2", None)
+        # Initialize other attributes specific to double exponential smoothing model
+        def fit_model(self):
+        # Implement logic to fit time series model
+            pass
+
+        def predict(self):
+            # Implement logic to predict using time series model
+            pass
+
