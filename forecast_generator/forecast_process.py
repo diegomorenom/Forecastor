@@ -6,6 +6,8 @@ import sys
 from tqdm import tqdm
 from time import sleep
 
+import importlib
+
 import warnings
 warnings.filterwarnings('ignore')
 #import pprint
@@ -20,7 +22,7 @@ sys.path.append(modeling_path)
 
 
 from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions
-from holt_winters import HoltWinters
+#from HoltWinters import HoltWinters
 
 store_id = 1
 family_name = 'GROCERY I'
@@ -48,8 +50,8 @@ class ForecastingProcess(BaseForecastingProcess):
     def __init__(self, data, models, parameters, forecast_days):
         super().__init__(data, models, parameters, forecast_days)
         # Filter time series and regression models
-        self.time_series_models = [model for model in models if issubclass(model, TimeSeriesModel)]
-        self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
+        #self.time_series_models = [model for model in models if issubclass(model, TimeSeriesModel)]
+        #self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
     
     def process_data(self):
         df_info = get_splitted_df(self.data, family_name,store_id)
@@ -59,20 +61,22 @@ class ForecastingProcess(BaseForecastingProcess):
 
     def run_all_models(self):
         df_ts = self.process_data()
-        for model_class in self.models:
-            model_parameters = self.parameters[model_class]
-            model_instance = model_class(df_ts, self.models, model_parameters, self.forecast_days, TimeSeriesModel)
+        for model in self.models:
+            #model_parameters = self.parameters[model_class]
+            module = importlib.import_module(model)
+            model_class = getattr(module, model)
+            model_instance = model_class(df_ts, self.models, self.parameters, self.forecast_days, TimeSeriesModel)
             if isinstance(model_instance, TimeSeriesModel):
                 df_ts = model_instance.prepare_data_ts()
             elif isinstance(model_instance, RegressionModel):
                 df_ts = model_instance.prepare_data_reg()
-            fitted_model = model_instance.fit_model(model_instance, df_ts)
+            fitted_model = model_instance.fit_model(df_ts)
             df_yhat = model_instance.predict(fitted_model)
-            self.save_forecast(df_yhat)
+            self.save_forecast(df_yhat, model)
 
-    def save_forecast(self, df_pred):
-        df_pred = structure_predictions(self.data['date'].max(), df_pred, f, s)
-        save_predictions(self.data['date'].max(), df_pred)
+    def save_forecast(self, df_pred, model):
+        df_pred = structure_predictions(self.data['date'].max(), df_pred, family_name, store_id)
+        save_predictions(self.data['date'].max(), df_pred, model)
 
 class TimeSeriesModel(ForecastingProcess):
     def __init__(self, data, models, parameters, forecast_days):

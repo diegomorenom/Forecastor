@@ -22,7 +22,7 @@ class HoltWinters:
         #self.seasonal = parameters.get("holt_winters_parameter_1", None)
         #self.seasonal_periods = parameters.get("holt_winters_parameter_2", None)
         
-    def fit_model(self):
+    def fit_model(self, df_ts):
         # Implement logic to fit time series model
         # create class
         model = ExponentialSmoothing(self.data, seasonal="add", seasonal_periods=7)
@@ -30,8 +30,8 @@ class HoltWinters:
         fitted_model = model.fit()
         return fitted_model
 
-    def predict(self):
+    def predict(self, fitted_model):
         # Implement logic to predict using time series model
         # make prediction
-        yhat = self.fitted_model.forecast(self.forecast_days)
+        yhat = fitted_model.forecast(self.forecast_days)
         return yhat

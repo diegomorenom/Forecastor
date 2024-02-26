@@ -5,8 +5,8 @@ import datetime
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-data_base_path = str(parent_path)+"/neural_network/data_processing/data_base"
-forecast_path = str(parent_path)+"/neural_network/data_processing/forecast_files"
+data_base_path = str(parent_path)+"/forecastor/data_processing/data_base"
+forecast_path = str(parent_path)+"/forecastor/data_processing/forecast_files"
 
 
 
@@ -53,9 +53,8 @@ def structure_predictions(date, df_pred, family, store_nbr):
     df_pred['date_updated'] = datetime.datetime.now()
     return df_pred
     
-def save_predictions(date, df_pred):
-    print('Saving predictions')
-    file_name = forecast_path+'/forecast_newralnetwork_'+str(date.replace('-', ''))+'.csv'
+def save_predictions(date, df_pred, model):
+    file_name = forecast_path+'/forecast_'+str(model)+'_'+str(date.replace('-', ''))+'.csv'
     df_pred['forecast_date'] = df_pred['forecast_date'].astype(str)
     df_pred['forecast_date'] = pd.to_datetime(df_pred['forecast_date'])
     df_pred = df_pred.loc[df_pred['forecast_date'] > date]
