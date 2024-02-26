@@ -49,6 +49,10 @@ class BaseForecastingProcess(ABC):
 class ForecastingProcess(BaseForecastingProcess):
     def __init__(self, data, models, parameters, forecast_days):
         super().__init__(data, models, parameters, forecast_days)
+        self.data = data
+        self.models = models
+        self.parameters = parameters
+        self.forecast_days = forecast_days
         # Filter time series and regression models
         #self.time_series_models = [model for model in models if issubclass(model, TimeSeriesModel)]
         #self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
@@ -62,17 +66,17 @@ class ForecastingProcess(BaseForecastingProcess):
     def run_all_models(self):
         df_ts = self.process_data()
         for model in self.models:
-            #model_parameters = self.parameters[model_class]
+            model_parameters = self.parameters[model]
             module = importlib.import_module(model)
             model_class = getattr(module, model)
-            model_instance = model_class(df_ts, self.models, self.parameters, self.forecast_days, TimeSeriesModel)
+            model_instance = model_class(df_ts, model_parameters, self.forecast_days)
             if isinstance(model_instance, TimeSeriesModel):
                 df_ts = model_instance.prepare_data_ts()
             elif isinstance(model_instance, RegressionModel):
                 df_ts = model_instance.prepare_data_reg()
             fitted_model = model_instance.fit_model(df_ts)
             df_yhat = model_instance.predict(fitted_model)
-            self.save_forecast(df_yhat, model)
+            self.save_forecast(df_yhat, model_parameters['model_name'])
 
     def save_forecast(self, df_pred, model):
         df_pred = structure_predictions(self.data['date'].max(), df_pred, family_name, store_id)
