@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -93,15 +93,29 @@ app.add_middleware(
 
 #     return {"message": "Forecasting process completed successfully."}
 
+class Metadata(BaseModel):
+    prediction_column: str
+    date_column: str
+
+
 @app.post("/save_file/")
 async def save_file(
+    metadata_str: str = Form(...),
     csv_file: UploadFile = File(...)):
-    print(csv_file.file)
+    
+    metadata_dict = eval(metadata_str)
+    
     # Read CSV file
     data = pd.read_csv(csv_file.file)
-    data.to_csv(store_path+'/data_api.csv')    
+    
+    data_columns = [metadata_dict['date_column'], metadata_dict['prediction_column']]
+    data = data[data_columns]
+    data.columns = ['date_column', 'prediction_column']
+    
+    # Save the CSV file
+    data.to_csv(store_path+'/data_api.csv')
 
-    return {"message": f"Data saved successfully. Columns {data.columns}"}
+    return {"message": f"Data saved successfully. Columns {data.columns}, Metadata: {metadata_dict}"}
 
 
 # @app.post("/forecast")

@@ -1,5 +1,5 @@
 {
-    "forecastDays": 15,
+    "forecastDays": 40,
     "selectedModels": [
         "HoltWinters"
     ]

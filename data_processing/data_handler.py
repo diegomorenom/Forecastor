@@ -11,13 +11,15 @@ forecast_path = str(parent_path)+"/forecastor/data_processing/forecast_files"
 
 
 def get_data():
-    data = pd.read_csv(data_base_path+"/train.csv")  
+    data = pd.read_csv(data_base_path+"/data_api.csv")
+    data = data[['date_column', 'prediction_column']]
+    data.columns = ['date', 'prediction_column']
     return data
 
-def get_splitted_df(data, family, store_nbr):
-    df_info = data[(data['family']==family)&(data['store_nbr']==store_nbr)]
-    df_info = pd.pivot_table(df_info, values='sales', index=['store_nbr', 'family','date'], aggfunc="sum").reset_index()
-    df_info = df_info[['date', 'sales']]
+def get_splitted_df(data):
+    #df_info = data[(data['family']==family)&(data['store_nbr']==store_nbr)]
+    df_info = pd.pivot_table(data, values='prediction_column', index=['date'], aggfunc="sum").reset_index()
+    df_info = df_info[['date', 'prediction_column']]
     return df_info
 
 def get_time_series(df_info):
@@ -44,17 +46,19 @@ def get_families(data):
 def train_test_split(data, n_test):
     return data[:-n_test], data[-n_test:]
 
-def structure_predictions(date, df_pred, family, store_nbr):
+def structure_predictions(date, df_pred, model):
     df_pred = pd.DataFrame(df_pred).reset_index()#, columns=['forecast_date','forecast'])
     df_pred.columns = ['forecast_date','forecast']
     df_pred['date'] = date
-    df_pred['family'] = family
-    df_pred['store_nbr'] = store_nbr
+    df_pred['model'] = model
+    #df_pred['family'] = family
+    #df_pred['store_nbr'] = store_nbr
     df_pred['date_updated'] = datetime.datetime.now()
     return df_pred
     
 def save_predictions(date, df_pred, model):
-    file_name = forecast_path+'/forecast_'+str(model)+'_'+str(date.replace('-', ''))+'.csv'
+    #file_name = forecast_path+'/forecast_'+str(model)+'_'+str(date.replace('-', ''))+'.csv'
+    file_name = forecast_path+'/forecast_'+str(model)+'.csv'
     df_pred['forecast_date'] = df_pred['forecast_date'].astype(str)
     df_pred['forecast_date'] = pd.to_datetime(df_pred['forecast_date'])
     df_pred = df_pred.loc[df_pred['forecast_date'] > date]

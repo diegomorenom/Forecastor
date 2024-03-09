@@ -24,8 +24,6 @@ sys.path.append(modeling_path)
 from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions
 #from HoltWinters import HoltWinters
 
-store_id = 1
-family_name = 'GROCERY I'
 
 class BaseForecastingProcess(ABC):
     def __init__(self, data, models, parameters, forecast_days):
@@ -58,7 +56,7 @@ class ForecastingProcess(BaseForecastingProcess):
         #self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
     
     def process_data(self):
-        df_info = get_splitted_df(self.data, family_name,store_id)
+        df_info = get_splitted_df(self.data)
         df_ts = get_time_series(df_info)
         df_ts = fill_values(df_ts)
         return df_ts
@@ -79,7 +77,7 @@ class ForecastingProcess(BaseForecastingProcess):
             self.save_forecast(df_yhat, model_parameters['model_name'])
 
     def save_forecast(self, df_pred, model):
-        df_pred = structure_predictions(self.data['date'].max(), df_pred, family_name, store_id)
+        df_pred = structure_predictions(self.data['date'].max(), df_pred, model)
         save_predictions(self.data['date'].max(), df_pred, model)
 
 class TimeSeriesModel(ForecastingProcess):

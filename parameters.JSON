@@ -6,7 +6,7 @@
 
     {
         "HoltWinters": {
-            "model_name": "holt_winters_1",
+            "model_name": "HoltWinters",
             "model_type": "HoltWinters",
             "model_description": "First version of holt winters",
             "model_parameters":{
