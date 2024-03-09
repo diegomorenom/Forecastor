@@ -1,6 +1,6 @@
 {
-    "forecastDays": 40,
+    "forecastDays": 15,
     "selectedModels": [
-        "HoltWinters"
+        "MovingAverage"
     ]
 }

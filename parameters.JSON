@@ -16,7 +16,7 @@
         },
 
         "MovingAverage": {
-            "model_name": "moving_average_1",
+            "model_name": "MovingAverage",
             "model_type": "MovingAverage",
             "model_description": "First version of moving average",
             "model_parameters":{
