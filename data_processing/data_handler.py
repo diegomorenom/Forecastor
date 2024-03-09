@@ -58,7 +58,7 @@ def save_predictions(date, df_pred, model):
     df_pred['forecast_date'] = df_pred['forecast_date'].astype(str)
     df_pred['forecast_date'] = pd.to_datetime(df_pred['forecast_date'])
     df_pred = df_pred.loc[df_pred['forecast_date'] > date]
-    df_pred.to_csv(file_name, mode='a', index=False, header=True)
+    df_pred.to_csv(file_name, mode='w', index=False, header=True)
     return "Forecast saved"
 
 
