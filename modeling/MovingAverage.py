@@ -11,8 +11,7 @@ warnings.simplefilter('ignore', ConvergenceWarning)
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-data_path = str(parent_path) + "/moving_average/data_processing"
-sys.path.append(data_path)
+
 
 # simple moving average
 def moving_average_model(data, forecast_days):

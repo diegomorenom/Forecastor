@@ -22,7 +22,7 @@ class HoltWinters:
         self.seasonal = self.parameters['model_parameters']['seasonal']
         self.seasonal_periods = self.parameters['model_parameters']['seasonal_periods']
         
-    def fit_model(self, df_ts):
+    def fit_model(self):
         model = ExponentialSmoothing(self.data, seasonal=self.seasonal, seasonal_periods=self.seasonal_periods)
         fitted_model = model.fit()
         return fitted_model

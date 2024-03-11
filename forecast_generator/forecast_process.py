@@ -22,7 +22,7 @@ sys.path.append(modeling_path)
 
 
 from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions
-#from HoltWinters import HoltWinters
+from data_modeling import model_data
 
 
 class BaseForecastingProcess(ABC):
@@ -51,9 +51,6 @@ class ForecastingProcess(BaseForecastingProcess):
         self.models = models
         self.parameters = parameters
         self.forecast_days = forecast_days
-        # Filter time series and regression models
-        #self.time_series_models = [model for model in models if issubclass(model, TimeSeriesModel)]
-        #self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
     
     def process_data(self):
         df_info = get_splitted_df(self.data)
@@ -67,33 +64,19 @@ class ForecastingProcess(BaseForecastingProcess):
             model_parameters = self.parameters[model]
             module = importlib.import_module(model)
             model_class = getattr(module, model)
-            model_instance = model_class(df_ts, model_parameters, self.forecast_days)
-            if isinstance(model_instance, TimeSeriesModel):
-                df_ts = model_instance.prepare_data_ts()
-            elif isinstance(model_instance, RegressionModel):
-                df_ts = model_instance.prepare_data_reg()
-            fitted_model = model_instance.fit_model(df_ts)
+            model_type = model_parameters['model_type']
+            if model_type == 'TimeSeries':
+                model_instance = model_class(df_ts, model_parameters, self.forecast_days)
+            elif model_type == 'Regression':
+                df_reg, scaler = model_data(df_ts)
+                model_instance = model_class(df_reg, scaler, model_parameters, self.forecast_days)
+            
+            fitted_model = model_instance.fit_model()
             df_yhat = model_instance.predict(fitted_model)
+            
             self.save_forecast(df_yhat, model_parameters['model_name'])
 
     def save_forecast(self, df_pred, model):
         df_pred = structure_predictions(self.data['date'].max(), df_pred, model)
         save_predictions(self.data['date'].max(), df_pred, model)
 
-class TimeSeriesModel(ForecastingProcess):
-    def __init__(self, data, models, parameters, forecast_days):
-        super().__init__(data, models, parameters, forecast_days)
-
-    def prepare_data(self):
-        # Implement logic to prepare time series data
-        pass
-
-    
-
-class RegressionModel(ForecastingProcess):
-    def __init__(self, data, models, parameters, forecast_days):
-        super().__init__(data, models, parameters, forecast_days)
-
-    def prepare_data(self):
-        # Implement logic to prepare data for regression model
-        pass
