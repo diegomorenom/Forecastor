@@ -58,26 +58,18 @@ def structure_predictions(date, df_pred, model):
     return df_pred
     
 def save_predictions(date, df_pred, model):
-    print(date)
     #file_name = forecast_path+'/forecast_'+str(model)+'_'+str(date.replace('-', ''))+'.csv'
     file_name = forecast_path+'/forecast_'+str(model)+'.csv'
     df_pred['forecast_date'] = df_pred['forecast_date'].astype(str)
     df_pred['forecast_date'] = pd.to_datetime(df_pred['forecast_date'])
     df_pred = df_pred.loc[df_pred['forecast_date'] > date]
-    print(df_pred)
     df_pred.to_csv(file_name, mode='w', index=False, header=True)
     return "Forecast saved"
 
 def get_train_test(data):
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print(data, len(data))
     with open('forecast_info.json') as f:
         forecast_info = json.load(f)
-    print(forecast_info, type(forecast_info))
     forecast_days = forecast_info['forecastDays']
-
-    # split_train = 10 
-    # train_dataset= 1-(1/split_train)
 
     model_data_long = data.shape
     model_data_long = model_data_long[0]
@@ -85,12 +77,9 @@ def get_train_test(data):
     n_train_days = round(model_data_long-forecast_days )
     train = data.iloc[:n_train_days, :]
     test = data.iloc[n_train_days:, :]
-    print(test.columns)
+
     test = test.reset_index()
     test.columns = [['forecast_date', 'forecast']]
-
-    print(train, len(train))
-    print(test, len(test))
 
     train.to_csv(data_base_path+'/data_train.csv')
     test.to_csv(data_base_path+'/data_test.csv', index=False)
