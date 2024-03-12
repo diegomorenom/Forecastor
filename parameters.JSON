@@ -37,6 +37,17 @@
                 "train_split_perc": 10,
                 "batch_size": 7
             }
+        },
+
+        "RandomForest": {
+            "model_name": "RandomForest",
+            "model_class": "RandomForest",
+            "model_type": "Regression",
+            "model_description": "First version of Random Forest",
+            "model_parameters":{
+                "n_estimators": 1000,
+                "random_state": 42
+            }
         }
     }
 

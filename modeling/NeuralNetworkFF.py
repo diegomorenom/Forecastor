@@ -16,7 +16,8 @@ path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
 data_path = str(parent_path) + "/forecastor/data_processing"
 sys.path.append(data_path)
-from data_modeling import scale_back_data, train_test_split
+from data_modeling import scale_back_data, train_test_split, labels_pred
+
 
 class NeuralNetworkFF():
     def __init__(self, data, scaler, parameters, forecast_days):

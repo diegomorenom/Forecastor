@@ -51,6 +51,9 @@ class ForecastingProcess(BaseForecastingProcess):
         self.models = models
         self.parameters = parameters
         self.forecast_days = forecast_days
+        # Filter time series and regression models
+        #self.time_series_models = [model for model in models if issubclass(model, TimeSeriesModel)]
+        #self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
     
     def process_data(self):
         df_info = get_splitted_df(self.data)
@@ -61,6 +64,7 @@ class ForecastingProcess(BaseForecastingProcess):
     def run_all_models(self):
         df_ts = self.process_data()
         for model in self.models:
+            print("Predicting "+model)
             model_parameters = self.parameters[model]
             module = importlib.import_module(model)
             model_class = getattr(module, model)
@@ -80,3 +84,21 @@ class ForecastingProcess(BaseForecastingProcess):
         df_pred = structure_predictions(self.data['date'].max(), df_pred, model)
         save_predictions(self.data['date'].max(), df_pred, model)
 
+class TimeSeriesModel(ForecastingProcess):
+    def __init__(self, data, models, parameters, forecast_days):
+        super().__init__(data, models, parameters, forecast_days)
+
+    def prepare_data(self):
+        # Implement logic to prepare time series data
+        pass
+
+    
+
+class RegressionModel(ForecastingProcess):
+    def __init__(self, data, models, parameters, forecast_days):
+        super().__init__(data, models, parameters, forecast_days)
+
+    def prepare_data_reg(self):
+        # Implement logic to prepare data for regression model
+        pass
+    

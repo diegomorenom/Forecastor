@@ -65,3 +65,12 @@ def train_test_split(data, split_train):
     x_val = x_val.reshape((x_val.shape[0], 1, x_val.shape[1]))
     
     return x_train, x_val, y_train, y_val
+
+def labels_pred(last_row):
+    features_list = []
+    columns = len(last_row)
+    for c in range(columns):
+        if c != 0:
+            sales = last_row[c]
+            features_list.append(sales)
+    return features_list  

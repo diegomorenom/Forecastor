@@ -26,7 +26,7 @@ class MovingAverage:
         self.parameters = parameters
         self.time_window = self.parameters['model_parameters']['time_window']
         
-    def fit_model(self, df_ts):
+    def fit_model(self):
         fitted_model = "No need to fit for moving average"
         return fitted_model
 
