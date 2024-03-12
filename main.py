@@ -54,43 +54,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# def read_csv(file: UploadFile) -> pd.DataFrame:
-#     """
-#     Read CSV file and return DataFrame
-#     """
-#     df = pd.read_csv(file.file)
-#     return df
 
-# def parse_yaml(yaml_data):
-#     try:
-#         parsed_data = yaml.safe_load(yaml_data)
-#         return parsed_data
-#     except yaml.YAMLError as e:
-#         return {"error": "Invalid YAML format", "detail": str(e)}
-
-# @app.post("/run_forecasting/")
-# async def run_forecasting(
-#     json_file: UploadFile = File(...), 
-#     csv_file: UploadFile = File(...)):
-#     # Read JSON file
-#     json_data = await json_file.read()
-#     parsed_json = json.loads(json_data)
-    
-#     # Read CSV file
-#     data = pd.read_csv(csv_file.file)
-    
-#     # Process data here using parsed_json and df
-#     models = ['HoltWinters']#parsed_json[0]["Models"]
-#     forecast_days = parsed_json[0]["ForecastDays"]
-#     parameters = parsed_json[1]
-
-#     # Instantiate ForecastingProcess class
-#     forecast_process_instance = fp.ForecastingProcess(data, models, parameters, forecast_days)
-
-#     # Call run_all_models method
-#     forecast_process_instance.run_all_models()
-
-#     return {"message": "Forecasting process completed successfully."}
 
 class Metadata(BaseModel):
     prediction_column: str
@@ -116,11 +80,6 @@ async def save_file(
 
     return {"message": f"Data saved successfully. Columns {data.columns}, Metadata: {metadata_dict}"}
 
-
-# @app.post("/forecast")
-# async def process_forecast(forecast_days: int):
-#     print(f"Received forecast_days: {forecast_days}")
-#     return {"message": f"Received forecast_days: {forecast_days}"}
 
 
 class ForecastRequest(BaseModel):
@@ -154,6 +113,19 @@ async def process_forecast(request_data: ForecastRequest):
 async def get_forecast_file(filename: str):
     # Construct the full path to the forecast file
     file_path = os.path.join(forecast_files, filename)
+    
+    # Check if the file exists
+    if os.path.exists(file_path):
+        # Serve the file using FileResponse
+        return FileResponse(file_path)
+    else:
+        # Return a 404 Not Found response if the file does not exist
+        return {"error": "File not found"}
+    
+@app.get("/data_base/{filename}")
+async def get_data_file(filename: str):
+    # Construct the full path to the forecast file
+    file_path = os.path.join(store_path, filename)
     
     # Check if the file exists
     if os.path.exists(file_path):

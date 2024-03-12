@@ -21,7 +21,7 @@ sys.path.append(data_path)
 sys.path.append(modeling_path)
 
 
-from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions
+from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions, get_train_test
 from data_modeling import model_data
 
 
@@ -56,13 +56,19 @@ class ForecastingProcess(BaseForecastingProcess):
         #self.regression_models = [model for model in models if issubclass(model, RegressionModel)]
     
     def process_data(self):
+        print('######################### PROCESS DATA')
         df_info = get_splitted_df(self.data)
+        print(df_info)
         df_ts = get_time_series(df_info)
+        print(df_ts)
         df_ts = fill_values(df_ts)
-        return df_ts
+        print(df_ts)
+        train, test = get_train_test(df_ts)
+        return train
 
     def run_all_models(self):
         df_ts = self.process_data()
+        print("$$$$$$$$$$$$$$$$",df_ts)
         for model in self.models:
             print("Predicting "+model)
             model_parameters = self.parameters[model]
@@ -77,12 +83,14 @@ class ForecastingProcess(BaseForecastingProcess):
             
             fitted_model = model_instance.fit_model()
             df_yhat = model_instance.predict(fitted_model)
+            print(df_yhat)
             
-            self.save_forecast(df_yhat, model_parameters['model_name'])
+            self.save_forecast(df_ts, df_yhat, model_parameters['model_name'])
 
-    def save_forecast(self, df_pred, model):
-        df_pred = structure_predictions(self.data['date'].max(), df_pred, model)
-        save_predictions(self.data['date'].max(), df_pred, model)
+    def save_forecast(self, df_ts, df_pred, model):
+        max_date = str(df_ts.reset_index()['date'].max())
+        df_pred = structure_predictions(max_date, df_pred, model)
+        save_predictions(max_date, df_pred, model)
 
 class TimeSeriesModel(ForecastingProcess):
     def __init__(self, data, models, parameters, forecast_days):
