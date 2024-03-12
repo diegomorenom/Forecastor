@@ -1,6 +1,11 @@
 {
     "forecastDays": 15,
     "selectedModels": [
-        "NeuralNetworkFF"
+        "HoltWinters",
+        "MovingAverage",
+        "RandomForest",
+        "NeuralNetworkFF",
+        "NeuralNetworkLSTM",
+        "FacebookProphet"
     ]
 }

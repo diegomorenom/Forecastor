@@ -3,7 +3,6 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Dict
-import yaml
 from forecast_generator import forecast_process as fp
 
 

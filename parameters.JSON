@@ -61,6 +61,17 @@
                 "train_split_perc": 10,
                 "batch_size": 7
             }
+        },
+
+        "FacebookProphet": {
+            "model_name": "FacebookProphet",
+            "model_class": "FacebookProphet",
+            "model_type": "TimeSeries",
+            "model_description": "First version of Facebook Prophet",
+            "model_parameters":{
+                "interval_width": 0.95,
+                "pred_freq": "D"
+            }
         }
     }
 
