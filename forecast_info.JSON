@@ -1,9 +1,6 @@
 {
     "forecastDays": 15,
     "selectedModels": [
-        "HoltWinters",
-        "MovingAverage",
-        "RandomForest",
         "NeuralNetworkFF"
     ]
 }
