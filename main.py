@@ -102,6 +102,7 @@ async def process_forecast(request_data: ForecastRequest):
 
     # Read CSV file
     data = get_data()
+    print(data)
     print(parameters_file)
     #parameters_json = open(parameters_file)
     #parameters = json.load(parameters_json)
