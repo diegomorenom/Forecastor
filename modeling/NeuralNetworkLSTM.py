@@ -14,7 +14,7 @@ from datetime import timedelta
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-data_path = str(parent_path) + "/forecastor/data_processing"
+data_path = str(parent_path) + "/app/data_processing"
 sys.path.append(data_path)
 from data_modeling import scale_back_data, train_test_split, labels_pred
 

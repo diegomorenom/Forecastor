@@ -18,10 +18,10 @@ warnings.filterwarnings('ignore')
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-data_path = str(parent_path) + "/forecastor/data_processing"
-forecast_path = str(parent_path) + "/forecastor/forecast_generator"
-store_path = str(parent_path) + "/forecastor/data_processing/data_base"
-forecast_files = str(parent_path) + "/forecastor/data_processing/forecast_files"
+data_path = str(parent_path) + "/app/data_processing"
+forecast_path = str(parent_path) + "/app/forecast_generator"
+store_path = str(parent_path) + "/app/data_processing/data_base"
+forecast_files = str(parent_path) + "/app/data_processing/forecast_files"
 
 sys.path.append(data_path)
 sys.path.append(forecast_path)

@@ -6,8 +6,8 @@ import json
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-data_base_path = str(parent_path)+"/forecastor/data_processing/data_base"
-forecast_path = str(parent_path)+"/forecastor/data_processing/forecast_files"
+data_base_path = str(parent_path)+"/app/data_processing/data_base"
+forecast_path = str(parent_path)+"/app/data_processing/forecast_files"
 
 
 

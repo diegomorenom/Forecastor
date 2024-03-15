@@ -6,7 +6,7 @@ import pandas as pd
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-forecast_path = str(parent_path) + "/forecastor/forecast_generator"
+forecast_path = str(parent_path) + "/app/forecast_generator"
 sys.path.append(forecast_path)
 
     
