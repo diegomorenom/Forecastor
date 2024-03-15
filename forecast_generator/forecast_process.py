@@ -14,8 +14,8 @@ warnings.filterwarnings('ignore')
 
 path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
-data_path = str(parent_path) + "/forecastor/data_processing"
-modeling_path = str(parent_path) + "/forecastor/modeling"
+data_path = str(parent_path) + "/app/data_processing"
+modeling_path = str(parent_path) + "/app/modeling"
 
 sys.path.append(data_path)
 sys.path.append(modeling_path)
