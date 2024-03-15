@@ -8,6 +8,7 @@ path = os.getcwd()
 parent_path = os.path.abspath(os.path.join(path, os.pardir))
 data_base_path = str(parent_path)+"/app/data_processing/data_base"
 forecast_path = str(parent_path)+"/app/data_processing/forecast_files"
+forecast_info_file = str(parent_path) + "/app/forecast_info.JSON"
 
 
 
@@ -67,7 +68,7 @@ def save_predictions(date, df_pred, model):
     return "Forecast saved"
 
 def get_train_test(data):
-    with open('forecast_info.json') as f:
+    with open(forecast_info_file) as f:
         forecast_info = json.load(f)
     forecast_days = forecast_info['forecastDays']
 
