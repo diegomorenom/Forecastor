@@ -103,14 +103,14 @@ async def process_forecast(request_data: ForecastRequest):
     # Read CSV file
     data = get_data()
     print(parameters_file)
-    parameters_json = open(parameters_file)
-    parameters = json.load(parameters_json)
+    #parameters_json = open(parameters_file)
+    #parameters = json.load(parameters_json)
 
     # Instantiate ForecastingProcess class
-    forecast_process_instance = fp.ForecastingProcess(data, selected_models, parameters[1], forecast_days)
+    #forecast_process_instance = fp.ForecastingProcess(data, selected_models, parameters[1], forecast_days)
 
     # Call run_all_models method
-    forecast_process_instance.run_all_models()
+    #forecast_process_instance.run_all_models()
 
     return {"message": "Forecasting process completed successfully."}
 
