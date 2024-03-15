@@ -30,6 +30,10 @@ from data_handler import get_data
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {"message": "Forecastor"}
+
 # Configure CORS settings
 origins = [
     "http://localhost",
