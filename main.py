@@ -28,7 +28,10 @@ sys.path.append(forecast_path)
 
 from data_handler import get_data
 
-app = FastAPI()
+print(str(parent_path),"xxxx",data_path)
+print(get_data())
+
+""" app = FastAPI()
 
 # Configure CORS settings
 origins = [
@@ -133,4 +136,4 @@ async def get_data_file(filename: str):
         return FileResponse(file_path)
     else:
         # Return a 404 Not Found response if the file does not exist
-        return {"error": "File not found"}
+        return {"error": "File not found"} """

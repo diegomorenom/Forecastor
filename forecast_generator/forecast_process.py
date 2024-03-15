@@ -19,9 +19,9 @@ modeling_path = str(parent_path) + "/forecastor/modeling"
 
 sys.path.append(data_path)
 sys.path.append(modeling_path)
+print(str(parent_path),"xxxx",data_path)
 
-
-from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions, get_train_test
+""" from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions, get_train_test
 from data_modeling import model_data
 
 
@@ -105,3 +105,4 @@ class RegressionModel(ForecastingProcess):
         # Implement logic to prepare data for regression model
         pass
     
+ """
