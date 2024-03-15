@@ -22,7 +22,7 @@ data_path = str(parent_path) + "/app/data_processing"
 forecast_path = str(parent_path) + "/app/forecast_generator"
 store_path = str(parent_path) + "/app/data_processing/data_base"
 forecast_files = str(parent_path) + "/app/data_processing/forecast_files"
-parameters_file = str(parent_path) + "app/parameters.JSON" 
+parameters_file = str(parent_path) + "/app/parameters.JSON" 
 
 sys.path.append(data_path)
 sys.path.append(forecast_path)
@@ -102,16 +102,15 @@ async def process_forecast(request_data: ForecastRequest):
 
     # Read CSV file
     data = get_data()
-    print(data)
     print(parameters_file)
-    #parameters_json = open(parameters_file)
-    #parameters = json.load(parameters_json)
+    parameters_json = open(parameters_file)
+    parameters = json.load(parameters_json)
 
     # Instantiate ForecastingProcess class
-    #forecast_process_instance = fp.ForecastingProcess(data, selected_models, parameters[1], forecast_days)
+    forecast_process_instance = fp.ForecastingProcess(data, selected_models, parameters[1], forecast_days)
 
     # Call run_all_models method
-    #forecast_process_instance.run_all_models()
+    forecast_process_instance.run_all_models()
 
     return {"message": "Forecasting process completed successfully."}
 
