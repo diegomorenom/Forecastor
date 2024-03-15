@@ -23,6 +23,7 @@ forecast_path = str(parent_path) + "/app/forecast_generator"
 store_path = str(parent_path) + "/app/data_processing/data_base"
 forecast_files = str(parent_path) + "/app/data_processing/forecast_files"
 parameters_file = str(parent_path) + "/app/parameters.JSON" 
+forecast_info_file = str(parent_path) + "/app/forecast_info.JSON"
 
 sys.path.append(data_path)
 sys.path.append(forecast_path)
@@ -97,7 +98,7 @@ async def process_forecast(request_data: ForecastRequest):
     selected_models = request_data.selectedModels
     print(f"Received forecast days: {forecast_days}")
     print(f"Received selected models: {selected_models}")
-    with open('forecast_info.JSON', 'w', encoding='utf-8') as f:
+    with open(forecast_info_file, 'w', encoding='utf-8') as f:
         json.dump(request_data.__dict__, f, ensure_ascii=False, indent=4)
 
     # Read CSV file
