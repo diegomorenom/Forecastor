@@ -22,7 +22,7 @@ data_path = str(parent_path) + "/app/data_processing"
 forecast_path = str(parent_path) + "/app/forecast_generator"
 store_path = str(parent_path) + "/app/data_processing/data_base"
 forecast_files = str(parent_path) + "/app/data_processing/forecast_files"
-parameters_file = str(parent_path) + "app/parameters.json" 
+parameters_file = str(parent_path) + "app/parameters.JSON" 
 
 sys.path.append(data_path)
 sys.path.append(forecast_path)
