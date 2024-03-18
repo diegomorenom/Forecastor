@@ -21,7 +21,7 @@ sys.path.append(data_path)
 sys.path.append(modeling_path)
 
 
-from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions, get_train_test
+from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions, get_train_test, delete_forecast_files
 from data_modeling import model_data
 
 
@@ -64,6 +64,7 @@ class ForecastingProcess(BaseForecastingProcess):
 
     def run_all_models(self):
         df_ts = self.process_data()
+        delete_forecast_files()
         for model in self.models:
             print("Predicting "+model)
             model_parameters = self.parameters[model]
