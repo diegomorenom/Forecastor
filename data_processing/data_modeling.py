@@ -1,6 +1,13 @@
+import os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error, r2_score
+
+path = os.getcwd()
+parent_path = os.path.abspath(os.path.join(path, os.pardir))
+data_base_path = str(parent_path)+"/app/data_processing/data_base"
+forecast_path = str(parent_path)+"/app/data_processing/forecast_files"
 
 def model_data(df):
     print('Preparing data set')
@@ -74,3 +81,20 @@ def labels_pred(last_row):
             sales = last_row[c]
             features_list.append(sales)
     return features_list  
+
+def get_error_metrics(models):
+    df_real = pd.read_csv(data_base_path+"/data_test.csv")
+    df_real = df_real.rename({'forecast': 'actual'}, axis='columns')
+    model_error = {}
+    for model in models:
+        df_pred = pd.read_csv(forecast_path+"/forecast_"+model+".csv")
+        df_pred = df_pred[['forecast_date','forecast']]
+        df_pred.columns = ['forecast_date', model]
+        df_error = df_real.merge(df_pred, how='left', on='forecast_date')
+        model_error[model] = {}
+        model_error[model]['MAE'] = mean_absolute_error(df_error['actual'], df_error[model]) 
+        model_error[model]['MAPE'] = mean_absolute_percentage_error(df_error['actual'], df_error[model])
+        model_error[model]['MSE'] = mean_squared_error(df_error['actual'], df_error[model]) 
+        model_error[model]['RMSE'] = mean_squared_error(df_error['actual'], df_error[model], squared=False) 
+        model_error[model]['R2'] = r2_score(df_error['actual'], df_error[model])
+    return model_error

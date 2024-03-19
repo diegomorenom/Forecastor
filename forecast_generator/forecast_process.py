@@ -22,7 +22,7 @@ sys.path.append(modeling_path)
 
 
 from data_handler import get_time_series, get_splitted_df, fill_values, structure_predictions, save_predictions, get_train_test, delete_forecast_files
-from data_modeling import model_data
+from data_modeling import model_data, get_error_metrics
 
 
 class BaseForecastingProcess(ABC):
@@ -79,9 +79,10 @@ class ForecastingProcess(BaseForecastingProcess):
             
             fitted_model = model_instance.fit_model()
             df_yhat = model_instance.predict(fitted_model)
-            print(df_yhat)
             
             self.save_forecast(df_ts, df_yhat, model_parameters['model_name'])
+        errors = get_error_metrics(self.models)
+        print(errors)
 
     def save_forecast(self, df_ts, df_pred, model):
         max_date = str(df_ts.reset_index()['date'].max())

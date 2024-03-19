@@ -29,6 +29,7 @@ sys.path.append(data_path)
 sys.path.append(forecast_path)
 
 from data_handler import get_data
+from data_modeling import get_error_metrics
 
 app = FastAPI()
 
@@ -140,3 +141,16 @@ async def get_data_file(filename: str):
     else:
         # Return a 404 Not Found response if the file does not exist
         return {"error": "File not found"}
+    
+@app.get('/error_metrics')
+def error_metrics():
+    # Read models list from a JSON file
+    with open('forecast_info.json', 'r') as file:
+        forecast_info = json.load(file)
+
+    models = forecast_info['selectedModels']
+    # Call the function to get error metrics
+    dict_error = get_error_metrics(models)
+
+    # Return the error metrics dictionary
+    return dict_error
