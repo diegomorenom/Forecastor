@@ -145,7 +145,7 @@ async def get_data_file(filename: str):
 @app.get('/error_metrics')
 def error_metrics():
     # Read models list from a JSON file
-    with open('forecast_info.json', 'r') as file:
+    with open(forecast_info_file, 'r') as file:
         forecast_info = json.load(file)
 
     models = forecast_info['selectedModels']
