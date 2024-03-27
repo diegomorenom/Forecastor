@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, Form, APIRouter
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -10,8 +10,6 @@ from forecast_generator import forecast_process as fp
 import json
 import os
 import sys
-from sys import prefix
-from typing import Union
 
 import pandas as pd
 
@@ -34,7 +32,6 @@ from data_handler import get_data
 from data_modeling import get_error_metrics
 
 app = FastAPI()
-prefix_router = APIRouter(prefix="/api")
 
 @app.get("/")
 async def root():
