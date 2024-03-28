@@ -1,6 +1,6 @@
 {
     "forecastDays": 15,
     "selectedModels": [
-        "NeuralProphet"
+        "XGBoost"
     ]
 }

@@ -83,6 +83,17 @@
                 "interval_width": 0.95,
                 "pred_freq": "D"
             }
+        },
+
+        "XGBoost": {
+            "model_name": "XGBoost",
+            "model_class": "XGBoost",
+            "model_type": "TimeSeries",
+            "model_description": "First version of XGBoost",
+            "model_parameters":{
+                "interval_width": 0.95,
+                "pred_freq": "D"
+            }
         }
     }
 
