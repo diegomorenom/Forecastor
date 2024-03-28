@@ -72,6 +72,17 @@
                 "interval_width": 0.95,
                 "pred_freq": "D"
             }
+        },
+
+        "NeuralProphet": {
+            "model_name": "NeuralProphet",
+            "model_class": "NeuralProphet",
+            "model_type": "TimeSeries",
+            "model_description": "First version of Neural Prophet",
+            "model_parameters":{
+                "interval_width": 0.95,
+                "pred_freq": "D"
+            }
         }
     }
 

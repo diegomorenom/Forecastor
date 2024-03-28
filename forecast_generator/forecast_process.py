@@ -71,8 +71,10 @@ class ForecastingProcess(BaseForecastingProcess):
             module = importlib.import_module(model)
             model_class = getattr(module, model)
             model_type = model_parameters['model_type']
+            print('#################MODEL INSTANCE')
             if model_type == 'TimeSeries':
                 model_instance = model_class(df_ts, model_parameters, self.forecast_days)
+                print('#################MODEL INSTANCE DONE')
             elif model_type == 'Regression':
                 df_reg, scaler = model_data(df_ts)
                 model_instance = model_class(df_reg, scaler, model_parameters, self.forecast_days)
